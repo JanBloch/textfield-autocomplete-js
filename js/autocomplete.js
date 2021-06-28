@@ -1,5 +1,13 @@
 
-const buildAutocomplete = (domElement, list, onSelected, {limitVisible, closeOnSelect=true} ) => {
+const defaultTheme = {
+    wrapperElement: {
+        classList: ['autocomplete-wrapper-style']
+    },
+    divElement: {
+        classList:['autocomplete-list-style']
+    }
+};
+const buildAutocomplete = (domElement, list, onSelected, {limitVisible, closeOnSelect=true, theme=defaultTheme}) => {
     if(!domElement instanceof HTMLElement)
         return;
     domElement.setAttribute('autocomplete', 'off');
@@ -7,6 +15,7 @@ const buildAutocomplete = (domElement, list, onSelected, {limitVisible, closeOnS
         domElement.id = Math.random().toString().substring(2);
     const divElement = document.createElement('div');
     const wrapper = document.createElement('div');
+
     divElement.id = Math.random().toString().substring(2);
     const updateList = () => {
         divElement.innerHTML = '';
@@ -38,10 +47,20 @@ const buildAutocomplete = (domElement, list, onSelected, {limitVisible, closeOnS
     divElement.className="autocomplete-list";
     divElement.setAttribute('tabindex', 1);
 
+    applyTheme(wrapper, divElement, theme);
     
     return updateList;
 };
 
+const applyTheme = (wrapperElement, divElement, theme) => {
+    if(theme.wrapperElement && theme.wrapperElement.classList){
+        wrapperElement.classList.add(...theme.wrapperElement.classList);
+    }
+
+    if(theme.divElement && theme.divElement.classList){
+        divElement.classList.add(...theme.divElement.classList);
+    }
+}
 const updateEditingClass = (event) => {
     if(event.target.value != '') {
         if(!event.target.parentNode.classList.contains('editing'))

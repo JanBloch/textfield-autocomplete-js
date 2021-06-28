@@ -4,3 +4,18 @@
 .autocomplete-list{
     display:none;
 }
+
+.autocomplete-wrapper-style{
+    padding: 5px 0;
+    width: fit-content;
+}
+
+.autocomplete-list-style{
+    box-shadow: 1px 1px 5px rgb(134, 134, 134);
+    width: 100%;
+    user-select:none;
+}
+.autocomplete-list-style div:hover{
+    cursor:pointer;
+    background-color:#f3f3f3;
+}

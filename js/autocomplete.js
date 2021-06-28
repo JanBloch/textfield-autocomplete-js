@@ -23,11 +23,12 @@ const buildAutocomplete = (domElement, list, onSelected, {limitVisible, closeOnS
             const childElement = document.createElement('div');
             childElement.innerText = v;
             childElement.onclick = () => {
-                onSelected(v)
+                onSelected(v);
                 domElement.value = v;
                 if(closeOnSelect){
                     wrapper.classList.remove('editing');
                 }
+                updateList();
             }
             
             divElement.appendChild(childElement);

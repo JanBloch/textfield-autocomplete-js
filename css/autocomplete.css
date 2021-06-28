@@ -1,0 +1,6 @@
+.autocomplete-wrapper.editing .autocomplete-list{
+    display:block;
+}
+.autocomplete-list{
+    display:none;
+}

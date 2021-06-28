@@ -1,1 +1,7 @@
-# textfield-autocomplete-js
+# JavaScript Textfield Autocomplete
+
+## Description
+
+## Installation
+
+## Usage

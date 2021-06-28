@@ -1,19 +1,31 @@
 
-const buildAutocomplete = (domElement, list, {limitVisible} ) => {
+const buildAutocomplete = (domElement, list, onSelected, {limitVisible, closeOnSelect=true} ) => {
     if(!domElement instanceof HTMLElement)
         return;
     domElement.setAttribute('autocomplete', 'off');
+    if(!domElement.id)
+        domElement.id = Math.random().toString().substring(2);
     const divElement = document.createElement('div');
+    const wrapper = document.createElement('div');
+    divElement.id = Math.random().toString().substring(2);
     const updateList = () => {
         divElement.innerHTML = '';
-        list.filter(v=>v.indexOf(domElement.value) == 0).slice(0, limitVisible).forEach(v=>{
+        list.filter(v=>v.indexOf(domElement.value) == 0).slice(0, limitVisible ? limitVisible : list.length).forEach(v=>{
             const childElement = document.createElement('div');
             childElement.innerText = v;
+            childElement.onclick = () => {
+                onSelected(v)
+                domElement.value = v;
+                if(closeOnSelect){
+                    wrapper.classList.remove('editing');
+                }
+            }
+            
             divElement.appendChild(childElement);
         });
     };
     updateList();
-    const wrapper = document.createElement('div');
+    
     
     domElement.addEventListener('input', (e)=>{updateEditingClass(e);updateList();});
     domElement.addEventListener('focusout', removeEditingClassIfFocusLost([domElement.id, divElement.id]));

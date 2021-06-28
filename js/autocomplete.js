@@ -1,18 +1,21 @@
 
-const buildAutocomplete = (domElement, list, {limit}) => {
+const buildAutocomplete = (domElement, list, {limitVisible} ) => {
     if(!domElement instanceof HTMLElement)
         return;
     domElement.setAttribute('autocomplete', 'off');
-
     const divElement = document.createElement('div');
-    list.forEach(v=>{
-        const childElement = document.createElement('div');
-        childElement.innerText = v;
-        divElement.appendChild(childElement);
-    });
+    const updateList = () => {
+        divElement.innerHTML = '';
+        list.filter(v=>v.indexOf(domElement.value) == 0).slice(0, limitVisible).forEach(v=>{
+            const childElement = document.createElement('div');
+            childElement.innerText = v;
+            divElement.appendChild(childElement);
+        });
+    };
+    updateList();
     const wrapper = document.createElement('div');
     
-    domElement.addEventListener('input', updateEditingClass);
+    domElement.addEventListener('input', (e)=>{updateEditingClass(e);updateList();});
     domElement.addEventListener('focusout', removeEditingClassIfFocusLost([domElement.id, divElement.id]));
     divElement.addEventListener('focusout', removeEditingClassIfFocusLost([domElement.id, divElement.id]));
     domElement.addEventListener('focusin', updateEditingClass);
@@ -22,6 +25,9 @@ const buildAutocomplete = (domElement, list, {limit}) => {
     wrapper.className="autocomplete-wrapper";
     divElement.className="autocomplete-list";
     divElement.setAttribute('tabindex', 1);
+
+    
+    return updateList;
 };
 
 const updateEditingClass = (event) => {
